@@ -1,8 +1,10 @@
 package com.thoughtworks.service
 
 import com.thoughtworks.RetrofitService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-suspend fun displayProducts() {
+suspend fun displayProducts() = withContext(Dispatchers.IO) {
     val products = RetrofitService.api.getProducts()
     val inventories = RetrofitService.api.getInventories()
 
@@ -19,6 +21,7 @@ suspend fun displayProducts() {
             product.type == "HIGH_DEMAND" && stock <= 30 -> product.price * 1.5
             else -> product.price
         }
+
 
         println("SKU: ${product.sku}, Name: ${product.name}, Price: $adjustedPrice, Stock: $stock, Image URL: ${product.imageUrl}")
     }
